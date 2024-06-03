@@ -35,7 +35,7 @@ print("Encoded message:", encoded)
 ```
 
 ### Image Encryption and Decryption
-
+![image](pics/IMAGE.png)
 #### Functions
 1. **generate_key(shape, seed=0)**
    - Generates a key for each channel of the image with a specified seed for reproducibility.
