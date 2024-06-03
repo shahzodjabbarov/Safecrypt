@@ -46,38 +46,48 @@ filename3 = PhotoImage(file=image_path3)
 
 entry_n = Entry()
 entry_e = Entry()
+entry_path = Entry()
 button_text = Button()
 button_picture = Button()
 button_encode = Button()
 button_back = Button()
+button_back2 = Button()
+button_choose = Button()
 button_clear = Button()
+button_clear2 = Button()
 button_go = Button()
 button_norm = Button()
 normal  = ''
 encoded = ''
-
+image_path = ''
 def home():
     global button_encode
     global button_back
+    global button_back2
     global button_clear
     global button_go
     global button_norm
     global entry_e
     global entry_n
+    global button_choose
 
     global filename
+    global entry_path
     global script_dir
     global button_text
     global button_picture
     global background_label
     global filename
 
-
+    entry_path.place(x=900.0, y=197.0, width=250.0, height=21.0)
     button_go.place(x=900,   y=287.0,   width=86.0,     height=38)
     button_norm.place(x=900.0,   y=287.0,    width=86.0,     height=38)
     button_encode.place(x=900.0,    y=287.0,    width=86.0,     height=38)
     button_clear.place(x=900,    y=287.0,    width=86.0,     height=38)
+    button_clear2.place(x=900,    y=287.0,    width=86.0,     height=38)
     button_back.place(x=900,    y=340.0,    width=59.0,     height=25)
+    button_back2.place(x=900,    y=340.0,    width=59.0,     height=25)
+    button_choose.place(x=900,    y=340.0,    width=59.0,     height=25)
     entry_n.place(x=900, y=197.0, width=250.0, height=21.0)
     entry_e.place(x=900, y=235.0, width=245.0, height=21.0) 
 
@@ -270,6 +280,12 @@ def clear():
     entry_e.delete(0, tk.END)
     normal = ''
     encoded = ''
+
+def clear2():
+    global entry_path
+    global image_path
+    entry_path.delete(0, tk.END)
+    image_path = ''
     
 def copy_n():
     global normal
@@ -287,13 +303,14 @@ def image():
     global button_picture
     global button_encrypt
     global button_decrypt
-
+    global button_choose
     global button_encode
-    global button_back
+    global button_back2
+    
     global button_clear
     global button_go
     global button_norm
-
+    global entry_path
     global background_label
     global filename3
 
@@ -301,15 +318,16 @@ def image():
     # Hide the text and picture buttons when the image mode is active
     button_text.place(x=900.0, y=238.0, width=112.0, height=43)
     button_picture.place(x=900.0, y=238.0, width=112.0, height=43.0)  # Hide the button
-
+    entry_path.place(x=30.0, y=215.0, width=302.0, height=21.0)
     # Set the background image for image mode
     background_label.configure(image=filename3)
 
     # Place the buttons and entries for image mode
-    button_encrypt.place(x=36.0, y=320.0, width=86.0, height=38)
-    button_decrypt.place(x=146.0, y=320.0, width=86.0, height=38)
-    button_clear.place(x=339.0, y=287.0, width=86.0, height=38)
-    button_back.place(x=565.0, y=340.0, width=59.0, height=25)
+    button_encrypt.place(x=34.0, y=284.0, width=77.0, height=33)
+    button_decrypt.place(x=139.0, y=284.0, width=77.0, height=33)
+    button_choose.place(x=125.0, y=140.0, width=102.0, height=43)
+    button_clear2.place(x=249.0, y=284.0, width=77.0, height=33)
+    button_back2.place(x=566.0, y=340.0, width=59.0, height=25)
 
 def select_image_file():
     file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg")])
@@ -324,30 +342,52 @@ def save_decrypted_image():
     return file_path
 
 def encrypt_action():
-    image_path = select_image_file()
+    global image_path
+    global entry_path
+    
     if image_path:
-        output_path = save_encrypted_image()
-        if output_path:
-            encrypt_image(image_path, output_path)
-            entry_e.delete(0, tk.END)
-            entry_e.insert(tk.END, f"Encrypted image saved as {output_path}")
+        encrypt_image(image_path)
+        entry_path.delete(0, tk.END)
+        entry_path.insert(tk.END, f"Encrypted image was saved")
 
 def decrypt_action():
-    image_path = select_image_file()
+    global image_path
+    global entry_path
+    
     if image_path:
-        output_path = save_decrypted_image()
-        if output_path:
-            decrypt_image(image_path, output_path)
-            entry_e.delete(0, tk.END)
-            entry_e.insert(tk.END, f"Decrypted image saved as {output_path}")
+        encrypt_image(image_path)
+        entry_path.delete(0, tk.END)
+        entry_path.insert(tk.END, f"Decrypted image was saved")
+
+def choose():
+    global image_path
+    global entry_path
+
+    filename = filedialog.askopenfilename()
+    image_path = filename
+    entry_path.delete(0, tk.END)
+    entry_path.insert(tk.END, filename)
+
+	
+	
+
+
 
 
 # Configure encryption and decryption buttons
 button_encrypt_img = PhotoImage(file=script_dir / "assets/encrypt.png")
 button_decrypt_img = PhotoImage(file=script_dir / "assets/decrypt.png")
+button_choose_img = PhotoImage(file=script_dir / "assets/choosee.png")
+button_clear2_img = PhotoImage(file=script_dir / "assets/clear2.png")
+button_back2_img= PhotoImage(file=script_dir / "assets/back2.png")
 
 button_encrypt = Button(image=button_encrypt_img, borderwidth=0, highlightthickness=0, command=lambda: encrypt_action(), relief="flat")
 button_decrypt = Button(image=button_decrypt_img, borderwidth=0, highlightthickness=0, command=lambda: decrypt_action(), relief="flat")
+button_choose = Button(image=button_choose_img, borderwidth=0, highlightthickness=0, command=lambda: choose(), relief="flat")
+button_clear2 = Button(image=button_clear2_img,borderwidth=0,highlightthickness=0,command=lambda: clear2(),relief="flat")
+button_back2 = Button(image=button_back2_img,borderwidth=0,highlightthickness=0,command=lambda: home(),relief="flat")
+
+
 ###
 
 button_text_img= PhotoImage(file=script_dir / "assets/text1.png")
@@ -367,13 +407,13 @@ button_norm = Button(image=button_norm_img,borderwidth=0,highlightthickness=0,co
 button_encode = Button(image=button_encode_img,borderwidth=0,highlightthickness=0,command=lambda: copy_e(),relief="flat")
 button_clear = Button(image=button_clear_img,borderwidth=0,highlightthickness=0,command=lambda: clear(),relief="flat")
 button_back = Button(image=button_back_img,borderwidth=0,highlightthickness=0,command=lambda: home(),relief="flat")
-
 ###
 button_picture = Button(image=button_picture_img, borderwidth=0, highlightthickness=0, command=lambda: image(), relief="flat")
 ###
 
 entry_n = Entry(font = "Calibri 15 bold", fg="#013c3c", bd=0, bg="#ffffff", highlightthickness=0)
 entry_e = Entry(font = "Calibri 15 bold", fg="#013c3c", bd=0, bg="#ffffff", highlightthickness=0)
+entry_path = Entry(font = "Calibri 15 bold", fg="#013c3c", bd=0, bg="#ffffff", highlightthickness=0)
 
 home()
 root.resizable(False, False)
