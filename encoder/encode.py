@@ -1,9 +1,15 @@
 import tkinter as tk
-from tkinter import Tk, Button, Entry, Label, PhotoImage, messagebox
+from tkinter import Tk, Button, Entry, Label, PhotoImage, messagebox, filedialog
 import random
 from tkinter import PhotoImage, Label
 from pathlib import Path  
 import numpy as np
+###
+from PIL import Image
+
+from image_encryption import encrypt_image, decrypt_image
+###
+
 char_to_num = {
     'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7, 'i': 8, 'j': 9,
     'k': 10, 'l': 11, 'm': 12, 'n': 13, 'o': 14, 'p': 15, 'q': 16, 'r': 17, 's': 18,
@@ -35,6 +41,9 @@ filename2 = PhotoImage(file=image_path2)
 background_label = Label(root, image=filename)
 background_label.place(x=0,    y=0,     relwidth=1,     relheight=1)
 
+image_path3 = script_dir / "back3.png"
+filename3 = PhotoImage(file=image_path3)
+
 entry_n = Entry()
 entry_e = Entry()
 button_text = Button()
@@ -63,6 +72,7 @@ def home():
     global background_label
     global filename
 
+
     button_go.place(x=900,   y=287.0,   width=86.0,     height=38)
     button_norm.place(x=900.0,   y=287.0,    width=86.0,     height=38)
     button_encode.place(x=900.0,    y=287.0,    width=86.0,     height=38)
@@ -73,17 +83,18 @@ def home():
 
     background_label.configure(image=filename)
 
-
     
     button_text.place(x=47.0,   y=238.0,   width=112.0,     height=43)
     button_picture.place(x=227.0,   y=238.0,    width=112.0,     height=43.0)
-
     
-
+    # Hide encryption and decryption buttons initially
+    button_encrypt.place_forget()
+    button_decrypt.place_forget()
 
 def text():
     global button_text
     global button_picture
+
 
     global button_encode
     global button_back
@@ -108,10 +119,6 @@ def text():
     button_back.place(x=565.0,    y=340.0,    width=59.0,     height=25)
     entry_n.place(x=118.0, y=197.0, width=250.0, height=21.0)
     entry_e.place(x=118.0, y=235.0, width=245.0, height=21.0) 
-
-
-def image():
-    pass
 
 def start():
     global entry_n
@@ -254,7 +261,6 @@ def start():
     entry_e.delete(0, tk.END)
     entry_e.insert(tk.END, encoded)
     
-
 def clear():
     global entry_e
     global entry_n
@@ -275,9 +281,78 @@ def copy_e():
     root.clipboard_clear()
     root.clipboard_append(encoded)
 
+###
+def image():
+    global button_text
+    global button_picture
+    global button_encrypt
+    global button_decrypt
+
+    global button_encode
+    global button_back
+    global button_clear
+    global button_go
+    global button_norm
+
+    global background_label
+    global filename3
+
+
+    # Hide the text and picture buttons when the image mode is active
+    button_text.place(x=900.0, y=238.0, width=112.0, height=43)
+    button_picture.place(x=900.0, y=238.0, width=112.0, height=43.0)  # Hide the button
+
+    # Set the background image for image mode
+    background_label.configure(image=filename3)
+
+    # Place the buttons and entries for image mode
+    button_encrypt.place(x=36.0, y=320.0, width=86.0, height=38)
+    button_decrypt.place(x=146.0, y=320.0, width=86.0, height=38)
+    button_clear.place(x=339.0, y=287.0, width=86.0, height=38)
+    button_back.place(x=565.0, y=340.0, width=59.0, height=25)
+
+def select_image_file():
+    file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg")])
+    return file_path
+
+def save_encrypted_image():
+    file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("Image Files", "*.png")])
+    return file_path
+
+def save_decrypted_image():
+    file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("Image Files", "*.png")])
+    return file_path
+
+def encrypt_action():
+    image_path = select_image_file()
+    if image_path:
+        output_path = save_encrypted_image()
+        if output_path:
+            encrypt_image(image_path, output_path)
+            entry_e.delete(0, tk.END)
+            entry_e.insert(tk.END, f"Encrypted image saved as {output_path}")
+
+def decrypt_action():
+    image_path = select_image_file()
+    if image_path:
+        output_path = save_decrypted_image()
+        if output_path:
+            decrypt_image(image_path, output_path)
+            entry_e.delete(0, tk.END)
+            entry_e.insert(tk.END, f"Decrypted image saved as {output_path}")
+
+
+# Configure encryption and decryption buttons
+button_encrypt_img = PhotoImage(file=script_dir / "assets/encrypt.png")
+button_decrypt_img = PhotoImage(file=script_dir / "assets/decrypt.png")
+
+button_encrypt = Button(image=button_encrypt_img, borderwidth=0, highlightthickness=0, command=lambda: encrypt_action(), relief="flat")
+button_decrypt = Button(image=button_decrypt_img, borderwidth=0, highlightthickness=0, command=lambda: decrypt_action(), relief="flat")
+###
 
 button_text_img= PhotoImage(file=script_dir / "assets/text1.png")
 button_picture_img = PhotoImage(file=script_dir / "assets/image.png")
+
 button_picture = Button(image=button_picture_img,borderwidth=0,highlightthickness=0,command=lambda: image(),relief="flat")
 button_text = Button(image=button_text_img,borderwidth=0,highlightthickness=0,command=lambda: text(),relief="flat")
 
@@ -293,6 +368,9 @@ button_encode = Button(image=button_encode_img,borderwidth=0,highlightthickness=
 button_clear = Button(image=button_clear_img,borderwidth=0,highlightthickness=0,command=lambda: clear(),relief="flat")
 button_back = Button(image=button_back_img,borderwidth=0,highlightthickness=0,command=lambda: home(),relief="flat")
 
+###
+button_picture = Button(image=button_picture_img, borderwidth=0, highlightthickness=0, command=lambda: image(), relief="flat")
+###
 
 entry_n = Entry(font = "Calibri 15 bold", fg="#013c3c", bd=0, bg="#ffffff", highlightthickness=0)
 entry_e = Entry(font = "Calibri 15 bold", fg="#013c3c", bd=0, bg="#ffffff", highlightthickness=0)

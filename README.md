@@ -59,7 +59,7 @@ decrypt_image(encrypted_image_path, decrypted_image_path)
 ### Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/safecrypt.git
+   git clone https://github.com/shahzodjabbarov/Safecrypt.git
    cd safecrypt
    ```
 

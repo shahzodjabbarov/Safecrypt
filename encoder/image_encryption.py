@@ -41,6 +41,6 @@ def decrypt_image(encrypted_path, output_path, key_seed=42):
     decrypted_img.save(output_path)
     print(f"Decrypted image saved as {output_path}")
 
-# Usage
-encrypt_image('back.png', 'encrypted_image.png')  # The key will be generated within the function
-decrypt_image('encrypted_image.png', 'decrypted_image.png')  # The same key will be regenerated
+# Usage example in python
+# encrypt_image('back.png', 'encrypted_image.png')  # The key will be generated within the function
+# decrypt_image('encrypted_image.png', 'decrypted_image.png')  # The same key will be regenerated
