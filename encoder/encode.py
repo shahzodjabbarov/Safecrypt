@@ -60,6 +60,7 @@ button_norm = Button()
 normal  = ''
 encoded = ''
 image_path = ''
+
 def home():
     global button_encode
     global button_back
@@ -329,9 +330,9 @@ def image():
     button_clear2.place(x=249.0, y=284.0, width=77.0, height=33)
     button_back2.place(x=566.0, y=340.0, width=59.0, height=25)
 
-def select_image_file():
-    file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg")])
-    return file_path
+# def select_image_file():
+#     file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg")])
+#     return file_path
 
 def save_encrypted_image():
     file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("Image Files", "*.png")])
@@ -363,7 +364,8 @@ def choose():
     global image_path
     global entry_path
 
-    filename = filedialog.askopenfilename()
+    # filename = filedialog.askopenfilename()
+    filename = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg")])
     image_path = filename
     entry_path.delete(0, tk.END)
     entry_path.insert(tk.END, filename)
