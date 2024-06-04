@@ -29,22 +29,25 @@ def encrypt_image(image_path, key_seed=42):
     encrypted_img.save(file)
     return file
 
-def decrypt_image(encrypted_path, key_seed=42):
-    # Open the encrypted image
-    img = Image.open(encrypted_path)
+def decrypt_image(image_path, key_seed=42):
+    # Open the image
+    img = Image.open(image_path)
     img_array = np.array(img)
 
     # Generate a key for each channel
     keys = [generate_key(img_array[:, :, i].shape, seed=key_seed + i) for i in range(3)]
 
-    # Decrypt each channel
-    decrypted_array = np.zeros_like(img_array)
+    # Encrypt each channel
+    encrypted_array = np.zeros_like(img_array)
     for i in range(3):
-        decrypted_array[:, :, i] = np.bitwise_xor(img_array[:, :, i], keys[i])
+        encrypted_array[:, :, i] = np.bitwise_xor(img_array[:, :, i], keys[i])
 
-    # Save the decrypted image
-    decrypted_img = Image.fromarray(decrypted_array)
-    return decrypted_img
+    # Save the encrypted image
+    encrypted_img = Image.fromarray(encrypted_array)
+    file = filedialog.asksaveasfile(mode='wb', defaultextension=".png")
+    
+    encrypted_img.save(file)
+    return file
 
 # Usage example in python
 # encrypt_image('back.png', 'encrypted_image.png')  # The key will be generated within the function

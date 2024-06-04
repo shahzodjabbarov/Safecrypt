@@ -7,7 +7,9 @@ import numpy as np
 ###
 from PIL import Image
 
-from image_encryption import encrypt_image, decrypt_image
+from image_encryption import encrypt_image
+
+
 ###
 
 char_to_num = {
