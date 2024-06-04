@@ -359,7 +359,7 @@ def decrypt_action():
     global entry_path
     
     if image_path:
-        decrypt_image(image_path)
+        encrypt_image(image_path)
         entry_path.delete(0, tk.END)
         entry_path.insert(tk.END, f"Decrypted image was saved")
 
