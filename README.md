@@ -7,7 +7,7 @@ Safecrypt is a tool for encoding and decoding text and images using various encr
 
 ### Text Encryption and Decryption
 
-![image](https://github.com/shahzodjabbarov/Safecrypt/assets/145886003/f8f5876a-841d-4524-b1f6-d9a49801801d)
+![image](pics/TEXT.png)
 
 #### Functions
 1. **generate_key_matrix()**
@@ -35,7 +35,7 @@ print("Encoded message:", encoded)
 ```
 
 ### Image Encryption and Decryption
-
+![image](pics/IMAGE.png)
 #### Functions
 1. **generate_key(shape, seed=0)**
    - Generates a key for each channel of the image with a specified seed for reproducibility.

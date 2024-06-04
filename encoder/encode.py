@@ -62,6 +62,7 @@ button_norm = Button()
 normal  = ''
 encoded = ''
 image_path = ''
+
 def home():
     global button_encode
     global button_back
@@ -184,11 +185,11 @@ def start():
 
 
 
-        print("Matrix 1:")
+        print("Key:")
         print(matrix1)
-        print("Matrix 2:")
+        print("Key * Matrix:")
         print(matrix2)
-        print("Final string:")
+        print("Matrix:")
         print(rounded_matrix)
         print(result)
         entry_n.delete(0, tk.END)
@@ -199,7 +200,7 @@ def start():
             global num_to_char
             # Convert message characters to their assigned numbers
             numbers = [char_to_num.get(char, 95) for char in message]  # Return 95 for unknown characters
-            
+            print(f"Text in numbers: \n{numbers}")
             # Pad the message with space if necessary to make its length even
             if len(numbers) % 2 != 0:
                 numbers.append(char_to_num[' '])
@@ -263,11 +264,12 @@ def start():
     product = multiply(key, matrix)
     result = insert_columns(product, key)
     encoded = matrix_to_string(result)
-    print(key)
-    print(matrix)
-    print(product)
-    print(result)
-    print(encoded)
+    print(f"Text: \n{message}")
+    print(f"Key: \n{key}")
+    print(f"Matrix: \n{matrix}")
+    print(f"Key * Matrix: \n{product}")
+    print(f"Result: \n{result}")
+    print(f"Encoded: \n{encoded}")
 
 
     entry_e.delete(0, tk.END)
@@ -331,9 +333,9 @@ def image():
     button_clear2.place(x=249.0, y=284.0, width=77.0, height=33)
     button_back2.place(x=566.0, y=340.0, width=59.0, height=25)
 
-def select_image_file():
-    file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg")])
-    return file_path
+# def select_image_file():
+#     file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg")])
+#     return file_path
 
 def save_encrypted_image():
     file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("Image Files", "*.png")])
@@ -357,7 +359,7 @@ def decrypt_action():
     global entry_path
     
     if image_path:
-        encrypt_image(image_path)
+        decrypt_image(image_path)
         entry_path.delete(0, tk.END)
         entry_path.insert(tk.END, f"Decrypted image was saved")
 
@@ -365,7 +367,8 @@ def choose():
     global image_path
     global entry_path
 
-    filename = filedialog.askopenfilename()
+    # filename = filedialog.askopenfilename()
+    filename = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg")])
     image_path = filename
     entry_path.delete(0, tk.END)
     entry_path.insert(tk.END, filename)
